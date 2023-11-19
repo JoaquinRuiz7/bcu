@@ -1,14 +1,10 @@
 {
   "name": "cotizacionesbcu",
-  "repository": {
-    "type": "git",
-    "url": ""
-  },
   "version": "1.0.0",
   "description": "Cotizaciones contra el BROU",
   "main": "index.js",
   "scripts": {
-    "start": "npx tsc && node build/Test.js",
+    "start": "npx tsc && node dist/Test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Joaquin Ruiz",

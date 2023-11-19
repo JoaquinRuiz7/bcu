@@ -13,4 +13,10 @@ async function pruebaUltimoCierre() {
     console.log(data);
 }
 
-pruebaCotizacione();
+async function pruebaMonedas() {
+    const clienceBCu = new ClienteBCU();
+    const data = await clienceBCu.obtenerMonedas();
+    console.log(data);
+}
+
+pruebaMonedas();
