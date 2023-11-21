@@ -2,6 +2,7 @@ import * as soap from 'soap';
 import {IRespuestaObtenerFechaDeUltimoCierre} from "../interfaces/IRespuestaObtenerFechaDeUltimoCierre";
 import {IRespuestaObtenerCotizacion} from "../interfaces/IRespuestaObtenerCotizacion";
 import {IRespuestaMoneda} from "../interfaces/IRespuestaMoneda";
+import {BCUException} from "../exception/BCUException";
 
 export default class ClienteBCU {
 
@@ -9,7 +10,13 @@ export default class ClienteBCU {
     private readonly WSDL_ULTIMO_CIERRE = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsultimocierre?wsdl';
     private readonly WSDL_MONEDAS = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcumonedas?wsdl';
 
+    private readonly GRUPOS_MONEDAS = [0, 1];
+
     public async obtenerCotizacion(codigoDelaMoneda: number, fecha?: string): Promise<IRespuestaObtenerCotizacion> {
+
+        if (fecha && !this.esFechaValidaParaCotizacion(fecha)) {
+            throw new BCUException("La fecha de cotizacion debe ser anterior o igual a la fecha actual");
+        }
 
         if (!fecha) {
             const fechaUltimoCierre: IRespuestaObtenerFechaDeUltimoCierre = await this.obtenerFechaDelUltimoCierre();
@@ -50,6 +57,10 @@ export default class ClienteBCU {
             grupo = 0;
         }
 
+        if (!this.GRUPOS_MONEDAS.includes(grupo)) {
+            throw new BCUException("El grupo de monedas debe ser 0 o 1");
+        }
+
         const cliente = await soap.createClientAsync(this.WSDL_MONEDAS);
         const parametros = {
             Entrada: {Grupo: grupo}
@@ -65,5 +76,12 @@ export default class ClienteBCU {
 
         return monedas;
     }
-    
+
+
+    private esFechaValidaParaCotizacion(fecha: string): boolean {
+        const hoy: Date = new Date();
+        const fechaElegida: Date = new Date(fecha);
+        return fechaElegida <= hoy;
+    }
+
 }

@@ -1,9 +1,10 @@
 import ClienteBCU from "./integracion/ClienteBCU";
+import {Monedas} from "./monedas/Monedas";
 
 
 async function pruebaCotizacione() {
     const clienteBCU = new ClienteBCU();
-    const data = await clienteBCU.obtenerCotizacion(2222);
+    const data = await clienteBCU.obtenerCotizacion(Monedas.DOLAR_ESTADOUNIDENSE);
     console.log(data)
 }
 
@@ -19,4 +20,4 @@ async function pruebaMonedas() {
     console.log(data);
 }
 
-pruebaMonedas();
+pruebaCotizacione();
