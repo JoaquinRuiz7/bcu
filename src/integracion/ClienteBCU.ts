@@ -28,7 +28,7 @@ export default class ClienteBCU {
                 Moneda: {item: [codigoDelaMoneda]},
                 FechaDesde: fecha,
                 FechaHasta: fecha,
-                Grupo: '0',
+                Grupo: 0,
             }
         };
 
