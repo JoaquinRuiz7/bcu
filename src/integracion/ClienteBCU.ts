@@ -3,7 +3,7 @@ import { IRespuestaObtenerFechaDeUltimoCierre } from '../interfaces/IRespuestaOb
 import { IRespuestaObtenerCotizacion } from '../interfaces/IRespuestaObtenerCotizacion'
 import { IRespuestaMoneda } from '../interfaces/IRespuestaMoneda'
 import { BCUException } from '../exception/BCUException'
-import { Monedas } from '../monedas/Monedas'
+import { Moneda } from '../moneda/Moneda'
 
 export default class ClienteBCU {
     private readonly WSDL_COTIZACIONES: string =
@@ -15,8 +15,8 @@ export default class ClienteBCU {
     private readonly GRUPOS_MONEDAS = [0, 1]
 
     public async obtenerCotizacion(codigoDelaMoneda: number, fecha?: string): Promise<IRespuestaObtenerCotizacion> {
-        if (!Monedas[codigoDelaMoneda]) {
-            throw new BCUException('El codigo de la moneda no existe, verifique las monedas habilitadas.')
+        if (!Moneda[codigoDelaMoneda]) {
+            throw new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
         }
 
         if (fecha && !this.esFechaValidaParaCotizacion(fecha)) {
@@ -62,7 +62,7 @@ export default class ClienteBCU {
         }
 
         if (!this.GRUPOS_MONEDAS.includes(grupo)) {
-            throw new BCUException('El grupo de monedas debe ser 0 o 1')
+            throw new BCUException('El grupo de moneda debe ser 0 o 1')
         }
 
         const cliente = await soap.createClientAsync(this.WSDL_MONEDAS)

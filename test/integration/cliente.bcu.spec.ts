@@ -1,6 +1,6 @@
 import { describe, expect, it, jest, beforeEach } from '@jest/globals'
 import ClienteBCU from '../../src/integracion/ClienteBCU'
-import { Monedas } from '../../src'
+import { Moneda } from '../../src'
 import { BCUException } from '../../src/exception/BCUException'
 import { IRespuestaObtenerCotizacion } from '../../src/interfaces/IRespuestaObtenerCotizacion'
 
@@ -14,7 +14,7 @@ describe('BCU client', () => {
 
     it('should throw exception if invalid currency code is sent', async () => {
         await expect(clienteBCU.obtenerCotizacion(-1)).rejects.toThrowError(
-            new BCUException('El codigo de la moneda no existe, verifique las monedas habilitadas.')
+            new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
         )
     })
 
@@ -24,7 +24,7 @@ describe('BCU client', () => {
         tomorrow.setDate(today.getDate() + 1)
 
         await expect(
-            clienteBCU.obtenerCotizacion(Monedas.DOLAR_ESTADOUNIDENSE, tomorrow.toISOString())
+            clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENSE, tomorrow.toISOString())
         ).rejects.toThrowError(new BCUException('La fecha de cotizacion debe ser anterior o igual a la fecha actual'))
     })
 
@@ -33,7 +33,7 @@ describe('BCU client', () => {
             fechaDeUltimoCierre: lastClosingDate,
         })
 
-        const cotizacion: IRespuestaObtenerCotizacion = await clienteBCU.obtenerCotizacion(Monedas.DOLAR_ESTADOUNIDENSE)
+        const cotizacion: IRespuestaObtenerCotizacion = await clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENSE)
 
         expect(clienteBCU.obtenerFechaDelUltimoCierre).toHaveBeenCalledTimes(1)
         expect(cotizacion).toBeDefined()
@@ -43,7 +43,7 @@ describe('BCU client', () => {
 
     it('should return currency for date', async () => {
         const cotizacion: IRespuestaObtenerCotizacion = await clienteBCU.obtenerCotizacion(
-            Monedas.DOLAR_ESTADOUNIDENSE,
+            Moneda.DOLAR_ESTADOUNIDENSE,
             lastClosingDate.toISOString()
         )
 

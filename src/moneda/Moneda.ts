@@ -1,4 +1,4 @@
-export enum Monedas {
+export enum Moneda {
     DOLAR_ESTADOUNIDENSE = 2222,
     DOLAR_AUSTRALIANO = 105,
     PESO_ARGENTINO = 500,

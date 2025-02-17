@@ -1,36 +1,54 @@
-# Cliente SOAP obtener cotizaciones del Banco central del Uruguay
+# Cliente SOAP para Obtener Cotizaciones del Banco Central del Uruguay
 
-### Como usar:
+Este es un cliente SOAP para obtener cotizaciones (tipos de cambio) del **Banco Central del Uruguay (BCU)**. Permite obtener las cotizaciones de diferentes monedas y también proporciona funcionalidades para obtener la última fecha de cierre o cotizaciones para una fecha específica.
 
-#### Para obtener la cotizacion de la ultima fecha de cierre simplemente se hace asi:
+---
+
+### Cómo Usar:
+
+#### 1. Obtener la Cotización de la Última Fecha de Cierre:
+
+Para obtener la cotización para la fecha de cierre más reciente, simplemente llama al método `obtenerCotizacion` sin especificar una fecha:
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import { Monedas } from './Monedas'
+import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const cotizacion = clienteBCU.obtenerCotizacion(Monedas.DOLAR_ESTADOUNIDENSE)
+const cotizacion = await clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENSE)
 console.log(cotizacion)
 ```
 
-#### Para obtener la fecha de cotizacion en una fecha especifica se hace asi:
+#### 2. Obtener la Cotización para una Fecha Específica:
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import { Monedas } from './Monedas'
+import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const cotizacion = clienteBCU.obtenerCotizacion(Monedas.DOLAR_ESTADOUNIDENSE, '2025-02-14')
+const cotizacion = await clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENSE, '2025-02-14')
 console.log(cotizacion)
 ```
 
-### Para obtener el listado de monedas se hace asi:
+#### 3. Obtener el Listado de Moneda Disponibles
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import { Monedas } from './Monedas'
+import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const monedas = await clienceBCu.obtenerMonedas()
+const monedas = await clienteBCU.obtenerMonedas()  // Grupo 0 por defecto
 console.log(monedas)
 ```
+
+### Monedas disponibles
+
+El enum Moneda contiene un conjunto de códigos de moneda predefinidos. Algunos ejemplos incluyen:
+```typescript
+Moneda.DOLAR_ESTADOUNIDENSE //(Dólar Estadounidense)
+Moneda.PESO_ARGENTINO //(Peso Argentino)
+Moneda.EURO //(Euro)
+Moneda.PESO_CHILENO //(Peso Chileno)
+```
+
+Puedes ver la lista completa de monedas disponibles en el enum Moneda.

@@ -1,4 +1,4 @@
 import ClienteBCU from './integracion/ClienteBCU'
-import { Monedas } from './monedas/Monedas'
+import { Moneda } from './moneda/Moneda'
 
-export { ClienteBCU, Monedas }
+export { ClienteBCU, Moneda }
