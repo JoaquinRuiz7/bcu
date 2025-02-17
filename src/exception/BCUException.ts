@@ -3,7 +3,7 @@ export class BCUException extends Error {
         if (!message) {
             message = 'There was en error requesting the data.'
         }
-        super(message);
-        Object.setPrototypeOf(this, BCUException.prototype);
+        super(message)
+        Object.setPrototypeOf(this, BCUException.prototype)
     }
 }
