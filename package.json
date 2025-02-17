@@ -1,21 +1,24 @@
 {
     "name": "bcucotizaciones",
-    "version": "1.0.0",
-    "description": "Cotizaciones contra el BCU",
+    "version": "1.0.3",
+    "description": "An easy to use soap client for currency price consulting agains Uruguayan central bank (BCU)",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
     "scripts": {
-        "build": "tsc",
         "test": "jest --colors",
         "format": "prettier --write .",
         "prepublishOnly": "npm run build"
     },
     "keywords": [
-        "cotizacion",
-        "cotizaciones",
+        "Uruguay",
         "BCU",
-        "Banco central del Uruguay",
-        "Uruguay"
+        "bcu",
+        "cotizacion",
+        "currency",
+        "moneda"
     ],
     "author": "Joaquin Ruiz",
     "license": "ISC",

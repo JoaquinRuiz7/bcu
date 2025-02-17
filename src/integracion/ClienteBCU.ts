@@ -3,6 +3,7 @@ import { IRespuestaObtenerFechaDeUltimoCierre } from '../interfaces/IRespuestaOb
 import { IRespuestaObtenerCotizacion } from '../interfaces/IRespuestaObtenerCotizacion'
 import { IRespuestaMoneda } from '../interfaces/IRespuestaMoneda'
 import { BCUException } from '../exception/BCUException'
+import { Monedas } from '../monedas/Monedas'
 
 export default class ClienteBCU {
     private readonly WSDL_COTIZACIONES: string =
@@ -14,6 +15,10 @@ export default class ClienteBCU {
     private readonly GRUPOS_MONEDAS = [0, 1]
 
     public async obtenerCotizacion(codigoDelaMoneda: number, fecha?: string): Promise<IRespuestaObtenerCotizacion> {
+        if (!Monedas[codigoDelaMoneda]) {
+            throw new BCUException('El codigo de la moneda no existe, verifique las monedas habilitadas.')
+        }
+
         if (fecha && !this.esFechaValidaParaCotizacion(fecha)) {
             throw new BCUException('La fecha de cotizacion debe ser anterior o igual a la fecha actual')
         }
