@@ -2,12 +2,19 @@
     "name": "cotizacionesbcu",
     "version": "1.0.0",
     "description": "Cotizaciones contra el BROU",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "build": "tsc",
         "test": "jest --colors",
         "format": "prettier --write ."
     },
+    "keywords": [
+        "cotizacion",
+        "cotizaciones",
+        "BCU",
+        "Banco central del Uruguay",
+        "Uruguay"
+    ],
     "author": "Joaquin Ruiz",
     "license": "ISC",
     "dependencies": {
