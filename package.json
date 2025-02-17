@@ -8,6 +8,7 @@
         "dist"
     ],
     "scripts": {
+        "build": "tsc",
         "test": "jest --colors",
         "format": "prettier --write .",
         "prepublishOnly": "npm run build"
