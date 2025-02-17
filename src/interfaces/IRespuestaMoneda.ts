@@ -1,4 +1,4 @@
 export interface IRespuestaMoneda {
-    codigo: number,
+    codigo: number
     nombre: string
 }
