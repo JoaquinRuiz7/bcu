@@ -4,7 +4,7 @@
     "description": "Cotizaciones contra el BROU",
     "main": "index.js",
     "scripts": {
-        "build": "tsc && node dist/Test.js",
+        "build": "tsc",
         "test": "jest",
         "format": "prettier --write ."
     },
