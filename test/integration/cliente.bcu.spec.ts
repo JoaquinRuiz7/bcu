@@ -37,5 +37,17 @@ describe('BCU client', () => {
         expect(cotizacion).toBeDefined()
         expect(cotizacion.tipoCambioCompra).toBe(43.224)
         expect(cotizacion.tipoCambioVenta).toBe(43.224)
-    })
+    });
+    it('should return available currencies', async () => {
+        const clienteBCU = new ClienteBCU()
+        const currencies = await clienteBCU.obtenerMonedas();
+        expect(currencies).toBeDefined();
+        expect(currencies.length).toBeGreaterThan(0);
+    });
+    it('should return available currencies group 1', async () => {
+        const clienteBCU = new ClienteBCU()
+        const currencies = await clienteBCU.obtenerMonedas(1);
+        expect(currencies).toBeDefined();
+        expect(currencies.length).toBeGreaterThan(0);
+    });
 })

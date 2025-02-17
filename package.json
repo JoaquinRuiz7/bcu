@@ -1,13 +1,14 @@
 {
-    "name": "cotizacionesbcu",
+    "name": "bcucotizaciones",
     "version": "1.0.0",
-    "description": "Cotizaciones contra el BROU",
+    "description": "Cotizaciones contra el BCU",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "scripts": {
         "build": "tsc",
         "test": "jest --colors",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "prepublishOnly": "npm run build"
     },
     "keywords": [
         "cotizacion",
