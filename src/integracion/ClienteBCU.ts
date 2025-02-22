@@ -1,53 +1,62 @@
 import * as soap from 'soap'
 import { IRespuestaObtenerFechaDeUltimoCierre } from '../interfaces/IRespuestaObtenerFechaDeUltimoCierre'
-import { IRespuestaObtenerCotizacion } from '../interfaces/IRespuestaObtenerCotizacion'
+import {Cotizacion, IRespuestaObtenerCotizacion} from '../interfaces/IRespuestaObtenerCotizacion'
 import { IRespuestaMoneda } from '../interfaces/IRespuestaMoneda'
 import { BCUException } from '../exception/BCUException'
 import { Moneda } from '../moneda/Moneda'
+import { Grupo } from '../cotizacion/Grupo'
 
+type PeticionCotizacion = {
+    codigoDelaMoneda: number
+    fecha?: string
+    grupo?: Grupo
+}
 export default class ClienteBCU {
     private readonly WSDL_COTIZACIONES: string =
         'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcucotizaciones?wsdl'
     private readonly WSDL_ULTIMO_CIERRE: string =
         'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsultimocierre?wsdl'
     private readonly WSDL_MONEDAS: string = 'https://cotizaciones.bcu.gub.uy/wscotizaciones/servlet/awsbcumonedas?wsdl'
-
     private readonly GRUPOS_MONEDAS = [0, 1]
 
-    public async obtenerCotizacion(codigoDelaMoneda: number, fecha?: string): Promise<IRespuestaObtenerCotizacion> {
-        if (!Moneda[codigoDelaMoneda]) {
+    public async obtenerCotizacion(peticion: PeticionCotizacion): Promise<IRespuestaObtenerCotizacion> {
+        if (!Moneda[peticion.codigoDelaMoneda]) {
             throw new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
         }
 
-        if (fecha && !this.esFechaValidaParaCotizacion(fecha)) {
+        if (peticion.fecha && !this.esFechaValidaParaCotizacion(peticion.fecha)) {
             throw new BCUException('La fecha de cotizacion debe ser anterior o igual a la fecha actual')
         }
 
-        if (!fecha) {
+        if (!peticion.fecha) {
             const fechaUltimoCierre: IRespuestaObtenerFechaDeUltimoCierre = await this.obtenerFechaDelUltimoCierre()
-            fecha = fechaUltimoCierre.fechaDeUltimoCierre.toISOString().substring(0, 10)
+            peticion.fecha = fechaUltimoCierre.fechaDeUltimoCierre.toISOString().substring(0, 10)
         }
 
         const inputData = {
             Entrada: {
-                Moneda: { item: [codigoDelaMoneda] },
-                FechaDesde: fecha,
-                FechaHasta: fecha,
-                Grupo: 0,
+                Moneda: { item: [peticion.codigoDelaMoneda, Moneda.EURO, Moneda.DOLAR_ESTADOUNIDENSE] },
+                FechaDesde: peticion.fecha,
+                FechaHasta: peticion.fecha,
+                Grupo: peticion.grupo ?? 0,
             },
         }
 
         const client = await soap.createClientAsync(this.WSDL_COTIZACIONES)
         const result = await client.ExecuteAsync(inputData)
-        const tipoCambioCompra = result[0].Salida.datoscotizaciones['datoscotizaciones.dato'][0].TCC
-        const tipoCambioventa = result[0].Salida.datoscotizaciones['datoscotizaciones.dato'][0].TCV
-        const codigoIso = result[0].Salida.datoscotizaciones['datoscotizaciones.dato'][0].CodigoISO
+        const cotizaciones = result[0].Salida.datoscotizaciones['datoscotizaciones.dato']
+        cotizaciones.map((cotizacion) => ({
+            fecha: cotizacion.Fecha,
+            tipoCambioCompra: cotizacion.TCC,
+            tipoCambioVenta: cotizacion.TCV,
+            codigoIso: cotizacion.CodigoISO,
+            nombre:cotizacion.Nombre,
+            emisor: cotizacion.Emisor
+        }));
 
-        return {
-            tipoCambioCompra: tipoCambioCompra,
-            tipoCambioVenta: tipoCambioventa,
-            codigoIso: codigoIso,
-        }
+        console.log(cotizaciones);
+
+        return cotizaciones;
     }
 
     public async obtenerFechaDelUltimoCierre(): Promise<IRespuestaObtenerFechaDeUltimoCierre> {

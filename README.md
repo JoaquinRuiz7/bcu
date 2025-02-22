@@ -30,20 +30,32 @@ const cotizacion = await clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENS
 console.log(cotizacion)
 ```
 
-#### 3. Obtener el Listado de Moneda Disponibles
+#### 3. Obtener cotizacion para cierta fecha y para cierto grupo (MERCADO_INTERNACIONAL, COTIZACIONES_LOCALES, TASAS_LOCALES)
+
+```typescript
+//Se requieren los 3 parametros para especificar el grupo
+const quotation = await clienteBCU.obtenerCotizacion(
+    Moneda.DOLAR_ESTADOUNIDENSE,
+    lastClosingDate.toISOString(),
+    Grupo.TASAS_LOCALES
+)
+```
+
+#### 4. Obtener el Listado de Moneda Disponibles
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
 import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const monedas = await clienteBCU.obtenerMonedas()  // Grupo 0 por defecto
+const monedas = await clienteBCU.obtenerMonedas() // Grupo 0 por defecto
 console.log(monedas)
 ```
 
 ### Monedas disponibles
 
 El enum Moneda contiene un conjunto de códigos de moneda predefinidos. Algunos ejemplos incluyen:
+
 ```typescript
 Moneda.DOLAR_ESTADOUNIDENSE //(Dólar Estadounidense)
 Moneda.PESO_ARGENTINO //(Peso Argentino)

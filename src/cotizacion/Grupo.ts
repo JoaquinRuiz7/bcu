@@ -1,0 +1,5 @@
+export enum Grupo {
+    MERCADO_INTERNACIONAL = 1,
+    COTIZACIONES_LOCALES = 2,
+    TASAS_LOCALES = 3,
+}
