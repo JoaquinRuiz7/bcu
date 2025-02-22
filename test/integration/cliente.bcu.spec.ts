@@ -14,7 +14,7 @@ describe('BCU client', () => {
     })
 
     it('should throw exception if invalid currency code is sent', async () => {
-        await expect(clienteBCU.obtenerCotizacion({ codigoDelaMoneda: -1 })).rejects.toThrowError(
+        await expect(clienteBCU.obtenerCotizacion({ codigoDeMonedas: [-1] })).rejects.toThrowError(
             new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
         )
     })
@@ -26,8 +26,8 @@ describe('BCU client', () => {
 
         await expect(
             clienteBCU.obtenerCotizacion({
-                codigoDelaMoneda: Moneda.DOLAR_ESTADOUNIDENSE,
-                fecha: lastClosingDate.toISOString(),
+                codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
+                fecha: tomorrow.toISOString(),
             })
         ).rejects.toThrowError(new BCUException('La fecha de cotizacion debe ser anterior o igual a la fecha actual'))
     })
@@ -38,7 +38,7 @@ describe('BCU client', () => {
         })
 
         const cotizacion: IRespuestaObtenerCotizacion = await clienteBCU.obtenerCotizacion({
-            codigoDelaMoneda: Moneda.DOLAR_ESTADOUNIDENSE,
+            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
         })
 
         expect(clienteBCU.obtenerFechaDelUltimoCierre).toHaveBeenCalledTimes(1)
@@ -48,46 +48,48 @@ describe('BCU client', () => {
     })
 
     it('should return quotation for date', async () => {
-        const cotizacion: IRespuestaObtenerCotizacion = await clienteBCU.obtenerCotizacion({
-            codigoDelaMoneda: Moneda.DOLAR_ESTADOUNIDENSE,
+        const quotation: IRespuestaObtenerCotizacion = await clienteBCU.obtenerCotizacion({
+            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
             fecha: lastClosingDate.toISOString(),
         })
-        expect(cotizacion).toBeDefined()
-        //expect(cotizacion.tipoCambioCompra).toBe(43.224)
-        //expect(cotizacion.tipoCambioVenta).toBe(43.224)
+        expect(quotation).toBeDefined();
+        expect(quotation[0].tipoCambioCompra).toBe(43.224);
+        expect(quotation[0].tipoCambioVenta).toBe(43.224);
+        expect(quotation[0].codigoIso).toBe('USD');
+        expect(quotation[0].nombre).toBe('DOLAR USA');
     })
 
     it('should return quotation for international market', async () => {
         const quotation = await clienteBCU.obtenerCotizacion({
             grupo: Grupo.MERCADO_INTERNACIONAL,
             fecha: lastClosingDate.toISOString(),
-            codigoDelaMoneda: Moneda.DOLAR_ESTADOUNIDENSE,
+            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
         })
         expect(quotation).toBeDefined()
-       // expect(quotation.tipoCambioCompra).toBe(43.224)
-        //expect(quotation.tipoCambioVenta).toBe(43.224)
+       expect(quotation[0].tipoCambioCompra).toBe(43.224)
+       expect(quotation[0].tipoCambioVenta).toBe(43.224)
     })
 
     it('should return quotation for local quotations', async () => {
         const quotation = await clienteBCU.obtenerCotizacion({
             grupo: Grupo.COTIZACIONES_LOCALES,
             fecha: lastClosingDate.toISOString(),
-            codigoDelaMoneda: Moneda.DOLAR_ESTADOUNIDENSE,
+            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
         })
         expect(quotation).toBeDefined()
-       // expect(quotation.tipoCambioCompra).toBe(0)
-        //expect(quotation.tipoCambioVenta).toBe(0)
+       expect(quotation[0].tipoCambioCompra).toBe(0)
+        expect(quotation[0].tipoCambioVenta).toBe(0)
     })
 
     it('should return quotation for local tases', async () => {
         const quotation = await clienteBCU.obtenerCotizacion({
             grupo: Grupo.TASAS_LOCALES,
             fecha: lastClosingDate.toISOString(),
-            codigoDelaMoneda: Moneda.DOLAR_ESTADOUNIDENSE,
+            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
         })
         expect(quotation).toBeDefined()
-        //expect(quotation.tipoCambioCompra).toBe(0)
-        //expect(quotation.tipoCambioVenta).toBe(0)
+        expect(quotation[0].tipoCambioCompra).toBe(0)
+        expect(quotation[0].tipoCambioVenta).toBe(0)
     })
 
     it('should return available currencies', async () => {

@@ -1,13 +1,13 @@
 import * as soap from 'soap'
-import { IRespuestaObtenerFechaDeUltimoCierre } from '../interfaces/IRespuestaObtenerFechaDeUltimoCierre'
-import {Cotizacion, IRespuestaObtenerCotizacion} from '../interfaces/IRespuestaObtenerCotizacion'
-import { IRespuestaMoneda } from '../interfaces/IRespuestaMoneda'
-import { BCUException } from '../exception/BCUException'
-import { Moneda } from '../moneda/Moneda'
-import { Grupo } from '../cotizacion/Grupo'
+import {IRespuestaObtenerFechaDeUltimoCierre} from '../interfaces/IRespuestaObtenerFechaDeUltimoCierre'
+import {IRespuestaObtenerCotizacion} from '../interfaces/IRespuestaObtenerCotizacion'
+import {IRespuestaMoneda} from '../interfaces/IRespuestaMoneda'
+import {BCUException} from '../exception/BCUException'
+import {Moneda} from '../moneda/Moneda'
+import {Grupo} from '../cotizacion/Grupo'
 
 type PeticionCotizacion = {
-    codigoDelaMoneda: number
+    codigoDeMonedas: number[]
     fecha?: string
     grupo?: Grupo
 }
@@ -20,9 +20,12 @@ export default class ClienteBCU {
     private readonly GRUPOS_MONEDAS = [0, 1]
 
     public async obtenerCotizacion(peticion: PeticionCotizacion): Promise<IRespuestaObtenerCotizacion> {
-        if (!Moneda[peticion.codigoDelaMoneda]) {
-            throw new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
-        }
+
+        peticion.codigoDeMonedas.forEach(codigo=>{
+            if(!Moneda[codigo]){
+                throw new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
+            }
+        });
 
         if (peticion.fecha && !this.esFechaValidaParaCotizacion(peticion.fecha)) {
             throw new BCUException('La fecha de cotizacion debe ser anterior o igual a la fecha actual')
@@ -35,7 +38,7 @@ export default class ClienteBCU {
 
         const inputData = {
             Entrada: {
-                Moneda: { item: [peticion.codigoDelaMoneda, Moneda.EURO, Moneda.DOLAR_ESTADOUNIDENSE] },
+                Moneda: { item: [peticion.codigoDeMonedas.join(',')] },
                 FechaDesde: peticion.fecha,
                 FechaHasta: peticion.fecha,
                 Grupo: peticion.grupo ?? 0,
@@ -45,18 +48,14 @@ export default class ClienteBCU {
         const client = await soap.createClientAsync(this.WSDL_COTIZACIONES)
         const result = await client.ExecuteAsync(inputData)
         const cotizaciones = result[0].Salida.datoscotizaciones['datoscotizaciones.dato']
-        cotizaciones.map((cotizacion) => ({
+        return cotizaciones.map((cotizacion) => ({
             fecha: cotizacion.Fecha,
             tipoCambioCompra: cotizacion.TCC,
             tipoCambioVenta: cotizacion.TCV,
             codigoIso: cotizacion.CodigoISO,
-            nombre:cotizacion.Nombre,
+            nombre: cotizacion.Nombre,
             emisor: cotizacion.Emisor
         }));
-
-        console.log(cotizaciones);
-
-        return cotizaciones;
     }
 
     public async obtenerFechaDelUltimoCierre(): Promise<IRespuestaObtenerFechaDeUltimoCierre> {

@@ -8,8 +8,6 @@ export interface Cotizacion {
     nombre: string;
     codigoIso: string;
     emisor: string;
-    tcc: number;
-    tcv: number;
-    arbAct: number;
-    formaArbitrar: string;
+    tipoCambioCompra: number;
+    tipoCambioVenta: number;
 }
