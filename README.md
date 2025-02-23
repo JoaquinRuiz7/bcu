@@ -3,6 +3,9 @@
 Este es un cliente SOAP para obtener cotizaciones (tipos de cambio) del **Banco Central del Uruguay (BCU)**. Permite obtener las cotizaciones de diferentes monedas y también proporciona funcionalidades para obtener la última fecha de cierre o cotizaciones para una fecha específica. Ahora también permite obtener cotizaciones para múltiples monedas y diferentes grupos de cotización.
 
 ---
+### Instalacion
+
+`npm i bcucotizaciones`
 
 ### Cómo Usar:
 
