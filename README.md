@@ -1,6 +1,6 @@
 # Cliente SOAP para Obtener Cotizaciones del Banco Central del Uruguay
 
-Este es un cliente SOAP para obtener cotizaciones (tipos de cambio) del **Banco Central del Uruguay (BCU)**. Permite obtener las cotizaciones de diferentes monedas y también proporciona funcionalidades para obtener la última fecha de cierre o cotizaciones para una fecha específica.
+Este es un cliente SOAP para obtener cotizaciones (tipos de cambio) del **Banco Central del Uruguay (BCU)**. Permite obtener las cotizaciones de diferentes monedas y también proporciona funcionalidades para obtener la última fecha de cierre o cotizaciones para una fecha específica. Ahora también permite obtener cotizaciones para múltiples monedas y diferentes grupos de cotización.
 
 ---
 
@@ -12,40 +12,43 @@ Para obtener la cotización para la fecha de cierre más reciente, simplemente l
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import { Moneda } from './Moneda'
+import {Moneda} from "./Moneda";
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const cotizacion = await clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENSE)
-console.log(cotizacion)
+const cotizaciones = await clienteBCU.obtenerCotizacion({codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE,Moneda.EURO]})
+console.log(cotizaciones)
 ```
 
 #### 2. Obtener la Cotización para una Fecha Específica:
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const cotizacion = await clienteBCU.obtenerCotizacion(Moneda.DOLAR_ESTADOUNIDENSE, '2025-02-14')
+const cotizacion = await clienteBCU.obtenerCotizacion({ codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE], fecha: '2025-02-14' })
 console.log(cotizacion)
 ```
 
-#### 3. Obtener cotizacion para cierta fecha y para cierto grupo (MERCADO_INTERNACIONAL, COTIZACIONES_LOCALES, TASAS_LOCALES)
-
-```typescript
-//Se requieren los 3 parametros para especificar el grupo
-const quotation = await clienteBCU.obtenerCotizacion(
-    Moneda.DOLAR_ESTADOUNIDENSE,
-    lastClosingDate.toISOString(),
-    Grupo.TASAS_LOCALES
-)
-```
-
-#### 4. Obtener el Listado de Moneda Disponibles
+#### 3. Obtener Cotización para un Grupo Específico:
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import { Moneda } from './Moneda'
+import {Grupo} from './Grupo'
+import {Moneda} from "./Moneda";
+
+const clienteBCU: ClienteBCU = new ClienteBCU()
+const cotizacion = await clienteBCU.obtenerCotizacion({
+    codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
+    fecha: '2025-02-14',
+    grupo: Grupo.TASAS_LOCALES
+})
+console.log(cotizacion)
+```
+
+#### 4. Obtener el Listado de Monedas Disponibles:
+
+```typescript
+import ClienteBCU from './ClienteBCU'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
 const monedas = await clienteBCU.obtenerMonedas() // Grupo 0 por defecto
