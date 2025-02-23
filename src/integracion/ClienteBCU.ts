@@ -37,7 +37,7 @@ export default class ClienteBCU {
 
         const inputData = {
             Entrada: {
-                Moneda: { item: [peticion.codigoDeMonedas.join(',')] },
+                Moneda: { item: peticion.codigoDeMonedas },
                 FechaDesde: peticion.fecha,
                 FechaHasta: peticion.fecha,
                 Grupo: peticion.grupo ?? 0,
