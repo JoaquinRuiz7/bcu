@@ -3,6 +3,7 @@
 Este es un cliente SOAP para obtener cotizaciones (tipos de cambio) del **Banco Central del Uruguay (BCU)**. Permite obtener las cotizaciones de diferentes monedas y también proporciona funcionalidades para obtener la última fecha de cierre o cotizaciones para una fecha específica. Ahora también permite obtener cotizaciones para múltiples monedas y diferentes grupos de cotización.
 
 ---
+
 ### Instalacion
 
 `npm i bcucotizaciones`
@@ -15,10 +16,10 @@ Para obtener la cotización para la fecha de cierre más reciente, simplemente l
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import {Moneda} from "./Moneda";
+import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const cotizaciones = await clienteBCU.obtenerCotizacion({codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE,Moneda.EURO]})
+const cotizaciones = await clienteBCU.obtenerCotizacion({ codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE, Moneda.EURO] })
 console.log(cotizaciones)
 ```
 
@@ -28,7 +29,10 @@ console.log(cotizaciones)
 import ClienteBCU from './ClienteBCU'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
-const cotizacion = await clienteBCU.obtenerCotizacion({ codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE], fecha: '2025-02-14' })
+const cotizacion = await clienteBCU.obtenerCotizacion({
+    codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
+    fecha: '2025-02-14',
+})
 console.log(cotizacion)
 ```
 
@@ -36,14 +40,14 @@ console.log(cotizacion)
 
 ```typescript
 import ClienteBCU from './ClienteBCU'
-import {Grupo} from './Grupo'
-import {Moneda} from "./Moneda";
+import { Grupo } from './Grupo'
+import { Moneda } from './Moneda'
 
 const clienteBCU: ClienteBCU = new ClienteBCU()
 const cotizacion = await clienteBCU.obtenerCotizacion({
     codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
     fecha: '2025-02-14',
-    grupo: Grupo.TASAS_LOCALES
+    grupo: Grupo.TASAS_LOCALES,
 })
 console.log(cotizacion)
 ```

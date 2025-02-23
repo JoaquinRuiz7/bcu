@@ -52,11 +52,11 @@ describe('BCU client', () => {
             codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
             fecha: lastClosingDate.toISOString(),
         })
-        expect(quotation).toBeDefined();
-        expect(quotation[0].tipoCambioCompra).toBe(43.224);
-        expect(quotation[0].tipoCambioVenta).toBe(43.224);
-        expect(quotation[0].codigoIso).toBe('USD');
-        expect(quotation[0].nombre).toBe('DOLAR USA');
+        expect(quotation).toBeDefined()
+        expect(quotation[0].tipoCambioCompra).toBe(43.224)
+        expect(quotation[0].tipoCambioVenta).toBe(43.224)
+        expect(quotation[0].codigoIso).toBe('USD')
+        expect(quotation[0].nombre).toBe('DOLAR USA')
     })
 
     it('should return quotation for international market', async () => {
@@ -66,8 +66,8 @@ describe('BCU client', () => {
             codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
         })
         expect(quotation).toBeDefined()
-       expect(quotation[0].tipoCambioCompra).toBe(43.224)
-       expect(quotation[0].tipoCambioVenta).toBe(43.224)
+        expect(quotation[0].tipoCambioCompra).toBe(43.224)
+        expect(quotation[0].tipoCambioVenta).toBe(43.224)
     })
 
     it('should return quotation for local quotations', async () => {
@@ -77,7 +77,7 @@ describe('BCU client', () => {
             codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
         })
         expect(quotation).toBeDefined()
-       expect(quotation[0].tipoCambioCompra).toBe(0)
+        expect(quotation[0].tipoCambioCompra).toBe(0)
         expect(quotation[0].tipoCambioVenta).toBe(0)
     })
 

@@ -1,10 +1,10 @@
 import * as soap from 'soap'
-import {IRespuestaObtenerFechaDeUltimoCierre} from '../interfaces/IRespuestaObtenerFechaDeUltimoCierre'
-import {IRespuestaObtenerCotizacion} from '../interfaces/IRespuestaObtenerCotizacion'
-import {IRespuestaMoneda} from '../interfaces/IRespuestaMoneda'
-import {BCUException} from '../exception/BCUException'
-import {Moneda} from '../moneda/Moneda'
-import {Grupo} from '../cotizacion/Grupo'
+import { IRespuestaObtenerFechaDeUltimoCierre } from '../interfaces/IRespuestaObtenerFechaDeUltimoCierre'
+import { IRespuestaObtenerCotizacion } from '../interfaces/IRespuestaObtenerCotizacion'
+import { IRespuestaMoneda } from '../interfaces/IRespuestaMoneda'
+import { BCUException } from '../exception/BCUException'
+import { Moneda } from '../moneda/Moneda'
+import { Grupo } from '../cotizacion/Grupo'
 
 type PeticionCotizacion = {
     codigoDeMonedas: number[]
@@ -20,12 +20,11 @@ export default class ClienteBCU {
     private readonly GRUPOS_MONEDAS = [0, 1]
 
     public async obtenerCotizacion(peticion: PeticionCotizacion): Promise<IRespuestaObtenerCotizacion> {
-
-        peticion.codigoDeMonedas.forEach(codigo=>{
-            if(!Moneda[codigo]){
+        peticion.codigoDeMonedas.forEach((codigo) => {
+            if (!Moneda[codigo]) {
                 throw new BCUException('El codigo de la moneda no existe, verifique las moneda habilitadas.')
             }
-        });
+        })
 
         if (peticion.fecha && !this.esFechaValidaParaCotizacion(peticion.fecha)) {
             throw new BCUException('La fecha de cotizacion debe ser anterior o igual a la fecha actual')
@@ -54,8 +53,8 @@ export default class ClienteBCU {
             tipoCambioVenta: cotizacion.TCV,
             codigoIso: cotizacion.CodigoISO,
             nombre: cotizacion.Nombre,
-            emisor: cotizacion.Emisor
-        }));
+            emisor: cotizacion.Emisor,
+        }))
     }
 
     public async obtenerFechaDelUltimoCierre(): Promise<IRespuestaObtenerFechaDeUltimoCierre> {

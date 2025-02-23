@@ -3,11 +3,11 @@ export interface IRespuestaObtenerCotizacion {
 }
 
 export interface Cotizacion {
-    fecha: string;
-    moneda: number;
-    nombre: string;
-    codigoIso: string;
-    emisor: string;
-    tipoCambioCompra: number;
-    tipoCambioVenta: number;
+    fecha: string
+    moneda: number
+    nombre: string
+    codigoIso: string
+    emisor: string
+    tipoCambioCompra: number
+    tipoCambioVenta: number
 }
