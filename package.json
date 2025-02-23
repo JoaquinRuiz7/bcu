@@ -1,6 +1,6 @@
 {
     "name": "bcucotizaciones",
-    "version": "1.0.5",
+    "version": "2.0.0",
     "description": "An easy to use soap client for currency price consulting agains Uruguayan central bank (BCU)",
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
