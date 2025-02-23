@@ -43,8 +43,8 @@ describe('BCU client', () => {
 
         expect(clienteBCU.obtenerFechaDelUltimoCierre).toHaveBeenCalledTimes(1)
         expect(cotizacion).toBeDefined()
-        //expect(cotizacion.tipoCambioCompra).toBe(43.224)
-        //expect(cotizacion.tipoCambioVenta).toBe(43.224)
+        expect(cotizacion[0].tipoCambioCompra).toBe(43.224)
+        expect(cotizacion[0].tipoCambioVenta).toBe(43.224)
     })
 
     it('should return quotation for date', async () => {
@@ -85,7 +85,7 @@ describe('BCU client', () => {
         const quotation = await clienteBCU.obtenerCotizacion({
             grupo: Grupo.TASAS_LOCALES,
             fecha: lastClosingDate.toISOString(),
-            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE],
+            codigoDeMonedas: [Moneda.DOLAR_ESTADOUNIDENSE, Moneda.EURO],
         })
         expect(quotation).toBeDefined()
         expect(quotation[0].tipoCambioCompra).toBe(0)
