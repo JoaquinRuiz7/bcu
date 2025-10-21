@@ -23,6 +23,10 @@
     ],
     "author": "Joaquin Ruiz",
     "license": "ISC",
+    "funding": {
+        "type": "individual",
+        "url": "https://paypal.me/JRuizPuppo"
+    },
     "dependencies": {
         "soap": "^1.0.0"
     },
@@ -32,5 +36,6 @@
         "prettier": "^3.5.1",
         "ts-jest": "^29.2.5",
         "typescript": "^5.7.3"
-    }
+    },
+
 }
